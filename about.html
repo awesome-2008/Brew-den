@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Brew-Den | About</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">
+        <img src="coffie pictures/coffee (1).png" alt="logo" />
+        <span>Brew-Den</span>
+      </div>
+      <nav class="header__nav">
+        <ul class="nav__ul">
+          <li><a href="index.html" class="nav__a">HOME</a></li>
+          <li><a href="menu.html" class="nav__a">MENU</a></li>
+          <li><a href="testimonial.html" class="nav__a">TESTIMONIALS</a></li>
+          <li><a href="about.html" class="nav__a">ABOUT</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section class="about">
+
+        <!-- Story Section -->
+        <div class="about__story">
+          <div class="about__text">
+            <p class="about__cursive">Our Story</p>
+            <h2>More Than Just Coffee</h2>
+            <p class="about__desc">Brew-Den was born from a simple love for great coffee and warm spaces. We believe every cup should tell a story — crafted with care, served with passion, and enjoyed in good company. From our carefully sourced beans to our freshly baked pastries, everything at Brew-Den is made to make your day a little better.</p>
+            <p class="about__desc">Whether you're here for your morning ritual, a quiet afternoon, or a meetup with friends — Brew-Den is your den. Always warm. Always welcoming.</p>
+          </div>
+          <div class="about__stat-big">
+            <h1>5+</h1>
+            <p>Years of Crafting<br/>Perfect Coffee</p>
+          </div>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="about__stats">
+          <div class="about__stat-card">
+            <h3>500+</h3>
+            <p>Happy Customers</p>
+          </div>
+          <div class="about__stat-card">
+            <h3>20+</h3>
+            <p>Menu Items</p>
+          </div>
+          <div class="about__stat-card">
+            <h3>5★</h3>
+            <p>Average Rating</p>
+          </div>
+        </div>
+
+        <!-- Mission -->
+        <div class="about__mission">
+          <p class="about__cursive">Our Mission</p>
+          <h2>What Drives Us</h2>
+          <p class="about__desc">To create a space where every visit feels like home — where quality coffee meets genuine warmth, and where every customer leaves happier than they arrived.</p>
+        </div>
+
+      </section>
+      <!-- Contact Form -->
+<section class="contact">
+  <p class="contact__cursive">Get In Touch</p>
+  <h2 class="contact__title">Contact Us</h2>
+  <p class="contact__subtitle">Have a question or want to place a special order?<br> We'd love to hear from you.</p>
+
+  <div class="contact__form-wrapper">
+    <div class="contact__input-group">
+      <label>Your Name:</label>
+      <input type="text" id="contact__name" placeholder="John Doe" />
+    </div>
+    <div class="contact__input-group">
+      <label>Your Email:</label>
+      <input type="email" id="contact__email" placeholder="john@example.com" />
+    </div>
+    <div class="contact__input-group">
+      <label>Message:</label>
+      <textarea id="contact__message" rows="6" placeholder="Write your message here..."></textarea>
+    </div>
+    <button class="btn__primary contact__btn" id="contact__submit">Send Message</button>
+    <p class="contact__feedback" id="contact__feedback"></p>
+  </div>
+</section>
+    </main>
+    <script>
+  document.getElementById('contact__submit').addEventListener('click', async () => {
+    const name = document.getElementById('contact__name').value;
+    const email = document.getElementById('contact__email').value;
+    const message = document.getElementById('contact__message').value;
+    const feedback = document.getElementById('contact__feedback');
+
+    if (!name || !email || !message) {
+      feedback.textContent = 'Please fill in all fields.';
+      feedback.style.color = 'red';
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3000/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        feedback.textContent = 'Message sent successfully!';
+        feedback.style.color = '#c8922a';
+      } else {
+        feedback.textContent = 'Something went wrong. Try again.';
+        feedback.style.color = 'red';
+      }
+    } catch (error) {
+      feedback.textContent = 'Could not connect to server.';
+      feedback.style.color = 'red';
+    }
+  });
+</script>
+  </body>
+</html>
