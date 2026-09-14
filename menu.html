@@ -266,12 +266,21 @@
           return;
         }
 
+        orderFeedback.textContent = 'Placing your order, please wait...';
+        orderFeedback.style.color = 'white';
+
         try {
-         const response = await fetch('https://brew-den.onrender.com/order', {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 60000);
+
+          const response = await fetch('https://brew-den.onrender.com/order', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ item: selectedItem, price: selectedPrice, name, email, phone })
+            body: JSON.stringify({ item: selectedItem, price: selectedPrice, name, email, phone }),
+            signal: controller.signal
           });
+
+          clearTimeout(timeout);
 
           const data = await response.json();
           if (data.success) {
@@ -286,7 +295,11 @@
             orderFeedback.style.color = 'red';
           }
         } catch (error) {
-          orderFeedback.textContent = 'Could not connect to server.';
+          if (error.name === 'AbortError') {
+            orderFeedback.textContent = 'Server is waking up, please try again in 30 seconds.';
+          } else {
+            orderFeedback.textContent = 'Could not connect to server.';
+          }
           orderFeedback.style.color = 'red';
         }
       });
