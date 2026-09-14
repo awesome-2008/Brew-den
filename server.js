@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const nodemailer = require('nodemailer');
 const path = require('path');
+const https = require('https');
 
 const app = express();
 app.use(express.json());
@@ -63,6 +64,15 @@ app.post('/order', async (req, res) => {
     res.status(500).json({ success: false, message: 'Failed to place order' });
   }
 });
+
+// Keep alive ping
+setInterval(() => {
+  https.get('https://brew-den.onrender.com', (res) => {
+    console.log('Keep alive ping sent');
+  }).on('error', (err) => {
+    console.log('Ping error:', err.message);
+  });
+}, 840000);
 
 // Start server
 app.listen(3000, () => {
